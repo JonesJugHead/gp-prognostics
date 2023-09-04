@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>GP Prognostics - Redirection vers Discord</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Redirection...</h1>
+    <p>Vous allez être redirigé vers Discord pour vous connecter.</p>
+    <script>
+      var url = new URL(window.location.href);
+      var code = url.searchParams.get("code");
+      if (code != null) {
+        const url = "https://gp-prognostics.fr/api/discord/login/?code=" + code;
+
+        fetch(url)
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            if (data.status === "success") {
+              document.querySelector("p").textContent =
+                "Vous allez être redirigé vers la page d'accueil.";
+              localStorage.setItem("token", data.token);
+              window.location.href = window.location.origin;
+            } else {
+              window.location.href = window.location.origin + "/login/";
+            }
+          });
+      } else {
+        window.location.href =
+          "https://discord.com/api/oauth2/authorize?client_id=1111955711665127535&redirect_uri=https%3A%2F%2Fgp-prognostics.fr%2Flogin%2F&response_type=code&scope=identify";
+      }
+    </script>
+  </body>
+</html>
