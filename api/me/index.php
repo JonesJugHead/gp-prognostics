@@ -6,7 +6,7 @@ $pdo = new PDO('mysql:host='.$host.';port='.$port.';dbname='.$dbname, $username,
 $headers = apache_request_headers();
 $token = $headers['Authorization'];
 
-$stmt = $pdo->prepare("SELECT username, avatarUrl, id FROM users WHERE token = :token");
+$stmt = $pdo->prepare("SELECT username, avatarUrl, id, isAdmin FROM users WHERE token = :token");
 $stmt->bindParam(':token', $token);
 $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -29,6 +29,7 @@ if ($user) {
         array(
             'username' => $user['username'],
             "avatarUrl" => $user['avatarUrl'],
+            "isAdmin" => $user['isAdmin'],
             "pilotVoteId" => $pilotVoteId
             )
     );
